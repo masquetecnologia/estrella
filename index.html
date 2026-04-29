@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Más que Tecnología | Accesorios Tecnológicos</title>
+    <title>Más Que Tecnología | Catálogo Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
         
+        :root {
+            --primary: #FB6F92;
+            --primary-dark: #ff5c81;
+            --bg-dark: #0f172a;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
             color: #f1f5f9;
         }
 
@@ -22,266 +28,325 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .text-neon {
-            color: #38bdf8;
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        .text-glow {
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(251, 111, 146, 0.4);
         }
 
-        .bg-neon {
-            background-color: #38bdf8;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .hover-scale {
-            transition: transform 0.3s ease;
-        }
-        .hover-scale:hover {
-            transform: scale(1.05);
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px -10px rgba(251, 111, 146, 0.2);
         }
 
-        /* Botón flotante animado */
-        @keyframes pulse-whatsapp {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        /* Estilos Chat MÁS MENSAJES */
+        #chat-window {
+            transition: all 0.5s ease;
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
         }
-        .whatsapp-btn {
-            animation: pulse-whatsapp 2s infinite;
+
+        #chat-window.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
         }
+
+        .ai-bubble {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 18px 18px 18px 4px;
+        }
+
+        .user-bubble {
+            background: var(--primary);
+            border-radius: 18px 18px 4px 18px;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
     </style>
 </head>
-<body class="antialiased">
+<body class="overflow-x-hidden">
 
-    <!-- Navegación -->
+    <!-- Navbar -->
     <nav class="fixed w-full z-50 glass">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-2xl font-bold text-neon tracking-tighter">
-                        M<span class="text-white">+</span>T
-                    </span>
-                    <span class="ml-2 font-semibold hidden sm:block">Más que Tecnología</span>
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-[#FB6F92] rounded-xl flex items-center justify-center shadow-lg shadow-pink-500/20">
+                    <i class="fas fa-bolt-lightning text-white"></i>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#inicio" class="hover:text-neon transition-colors">Inicio</a>
-                        <a href="#servicios" class="hover:text-neon transition-colors">Productos</a>
-                        <a href="#contacto" class="hover:text-neon transition-colors">Contacto</a>
-                    </div>
-                </div>
-                <div class="md:hidden">
-                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
+                <h1 class="text-xl font-extrabold tracking-tighter uppercase">
+                    MÁS QUE <span class="text-[#FB6F92]">TECNOLOGÍA</span>
+                </h1>
             </div>
-        </div>
-        <!-- Menú Móvil -->
-        <div id="mobile-menu" class="hidden md:hidden glass px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-700">
-            <a href="#inicio" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Inicio</a>
-            <a href="#servicios" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Productos</a>
-            <a href="#contacto" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Contacto</a>
+            
+            <div class="hidden md:flex gap-8 text-[11px] font-bold uppercase tracking-widest">
+                <a href="#inicio" class="hover:text-[#FB6F92] transition">Inicio</a>
+                <a href="#productos" class="hover:text-[#FB6F92] transition">Productos</a>
+                <a href="#contacto" class="hover:text-[#FB6F92] transition">Contacto</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button id="cart-btn" class="relative p-2 hover:text-[#FB6F92] transition">
+                    <i class="fas fa-shopping-cart text-lg"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-[#FB6F92] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+                <button class="md:hidden text-2xl" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <!-- Sección Hero -->
-    <section id="inicio" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center">
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4">
-                    Innovación en cada <span class="text-neon">accesorio.</span>
-                </h1>
-                <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-                    Potencia tu Setup con lo último en periféricos y gadgets. Calidad garantizada por Estrella Condori.
-                </p>
-                <div class="flex justify-center gap-4">
-                    <a href="#servicios" class="bg-neon text-slate-900 px-8 py-3 rounded-full font-bold hover:opacity-90 transition-all transform hover:scale-105">
-                        Ver Catálogo
-                    </a>
-                    <a href="#contacto" class="border border-gray-600 px-8 py-3 rounded-full font-bold hover:bg-gray-800 transition-all">
-                        Contactar
-                    </a>
+    <!-- Hero Section -->
+    <section id="inicio" class="min-h-screen flex items-center pt-20 px-6 relative overflow-hidden">
+        <div class="absolute top-1/4 -left-20 w-96 h-96 bg-[#FB6F92]/20 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-1/4 -right-20 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]"></div>
+        
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center relative z-10">
+            <div>
+                <span class="inline-block px-4 py-1 rounded-full border border-[#FB6F92]/30 text-[#FB6F92] text-[10px] font-bold uppercase tracking-widest mb-6">Premium Tech Store</span>
+                <h2 class="text-5xl md:text-7xl font-extrabold leading-none mb-6">LLEVAMOS TU ESTILO AL <span class="text-[#FB6F92]">SIGUIENTE NIVEL.</span></h2>
+                <p class="text-gray-400 text-lg mb-10 max-w-lg">En Más Que Tecnología no solo vendemos gadgets, creamos experiencias digitales con el toque Rose Gold que te define.</p>
+                <div class="flex gap-4">
+                    <a href="#productos" class="bg-[#FB6F92] hover:bg-[#ff5c81] text-white px-8 py-4 rounded-2xl font-bold transition shadow-lg shadow-pink-500/25">Ver Catálogo</a>
+                    <a href="#contacto" class="glass px-8 py-4 rounded-2xl font-bold hover:bg-white/10 transition">Contactar</a>
                 </div>
             </div>
-        </div>
-        <!-- Decoración de fondo -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-20 pointer-events-none">
-            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500 rounded-full blur-[100px]"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500 rounded-full blur-[100px]"></div>
-        </div>
-    </section>
-
-    <!-- Sección Servicios/Productos -->
-    <section id="servicios" class="py-20 bg-slate-900/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Nuestros Accesorios</h2>
-                <div class="w-20 h-1 bg-neon mx-auto"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Tarjeta 1: Gamer -->
-                <div class="glass p-8 rounded-2xl hover-scale">
-                    <div class="text-neon mb-4 text-4xl">
-                        <i class="fas fa-gamepad"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Línea Gamer</h3>
-                    <p class="text-gray-400">Teclados mecánicos, ratones de alta precisión y auriculares envolventes para ganar todas tus partidas.</p>
-                </div>
-
-                <!-- Tarjeta 2: Oficina -->
-                <div class="glass p-8 rounded-2xl hover-scale">
-                    <div class="text-neon mb-4 text-4xl">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Productividad</h3>
-                    <p class="text-gray-400">Hubs USB-C, soportes ergonómicos y accesorios que transforman tu espacio de trabajo.</p>
-                </div>
-
-                <!-- Tarjeta 3: Gadgets -->
-                <div class="glass p-8 rounded-2xl hover-scale">
-                    <div class="text-neon mb-4 text-4xl">
-                        <i class="fas fa-microchip"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Gadgets Tech</h3>
-                    <p class="text-gray-400">Cargadores inteligentes, cables reforzados y las últimas novedades del mercado tecnológico.</p>
+            <div class="relative hidden md:block">
+                <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=800" alt="Gadget Premium" class="rounded-[40px] shadow-2xl border border-white/10 rotate-2">
+                <div class="absolute -bottom-6 -left-6 glass p-6 rounded-3xl animate-bounce">
+                    <p class="text-xs font-bold text-[#FB6F92]">TOP VENTAS ★</p>
+                    <p class="text-xl font-black">Bs. 850</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Redes Sociales -->
-    <section class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-2xl font-bold mb-10">Síguenos en nuestras plataformas</h2>
-            <div class="flex flex-wrap justify-center gap-6">
-                <a href="https://facebook.com/masquetecnologia" target="_blank" class="glass w-14 h-14 flex items-center justify-center rounded-full text-xl hover:text-blue-500 transition-all">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="https://tiktok.com/@masquetecnologia" target="_blank" class="glass w-14 h-14 flex items-center justify-center rounded-full text-xl hover:text-pink-500 transition-all">
-                    <i class="fab fa-tiktok"></i>
-                </a>
-                <a href="https://instagram.com/masquetecnologia" target="_blank" class="glass w-14 h-14 flex items-center justify-center rounded-full text-xl hover:text-orange-500 transition-all">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://youtube.com/@masquetecnologia" target="_blank" class="glass w-14 h-14 flex items-center justify-center rounded-full text-xl hover:text-red-500 transition-all">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="https://github.com/masquetecnologia" target="_blank" class="glass w-14 h-14 flex items-center justify-center rounded-full text-xl hover:text-white transition-all">
-                    <i class="fab fa-github"></i>
-                </a>
+    <!-- Catálogo de Productos -->
+    <section id="productos" class="py-24 px-6 bg-[#0a0f1d]">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div>
+                    <h3 class="text-3xl font-bold mb-2 uppercase">Catálogo <span class="text-[#FB6F92]">Exclusivo</span></h3>
+                    <p class="text-gray-500 font-medium">Equipamiento tecnológico de alta gama</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="px-6 py-2 rounded-full glass text-[10px] font-bold uppercase tracking-widest hover:bg-[#FB6F92] transition">Todos</button>
+                    <button class="px-6 py-2 rounded-full glass text-[10px] font-bold uppercase tracking-widest hover:bg-[#FB6F92] transition">Audio</button>
+                    <button class="px-6 py-2 rounded-full glass text-[10px] font-bold uppercase tracking-widest hover:bg-[#FB6F92] transition">Setup</button>
+                </div>
+            </div>
+
+            <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Se carga vía JavaScript -->
             </div>
         </div>
     </section>
 
-    <!-- Sección Contacto con Formulario de WhatsApp -->
-    <section id="contacto" class="py-20 bg-slate-900/50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass p-10 rounded-3xl">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl font-bold mb-2">Contáctanos vía WhatsApp</h2>
-                    <p class="text-gray-400">Completa tus datos y te responderemos de inmediato.</p>
-                </div>
-                
-                <form id="whatsappForm" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Mi Nombre</label>
-                            <input type="text" id="userName" required class="w-full bg-slate-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-neon transition-all" placeholder="Escribe tu nombre">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2">Producto de interés</label>
-                            <select id="userInterest" class="w-full bg-slate-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-neon transition-all">
-                                <option value="General">Consulta General</option>
-                                <option value="Gamer">Accesorios Gamer</option>
-                                <option value="Oficina">Periféricos de Oficina</option>
-                                <option value="Gadgets">Gadgets y Otros</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-2">Mi Mensaje</label>
-                        <textarea id="userMessage" rows="4" required class="w-full bg-slate-800 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-neon transition-all" placeholder="Hola Estrella, me gustaría saber más sobre..."></textarea>
-                    </div>
-                    <button type="button" onclick="sendToWhatsApp()" class="w-full bg-green-500 text-white font-bold py-4 rounded-xl hover:bg-green-600 transition-all flex items-center justify-center gap-2">
-                        <i class="fab fa-whatsapp text-xl"></i>
-                        Enviar por WhatsApp
-                    </button>
-                    <p id="formFeedback" class="text-center text-sm mt-4 hidden"></p>
-                </form>
+    <!-- Sección de Contacto WhatsApp -->
+    <section id="contacto" class="py-24 px-6">
+        <div class="max-w-3xl mx-auto glass rounded-[40px] p-10 md:p-16 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-10 opacity-10">
+                <i class="fab fa-whatsapp text-9xl"></i>
             </div>
+            <h3 class="text-4xl font-black mb-6">¿LISTO PARA TU <span class="text-[#FB6F92]">PEDIDO?</span></h3>
+            <p class="text-gray-400 mb-8">Envíanos un mensaje directo a WhatsApp. En Más Que Tecnología te atendemos de forma personalizada.</p>
+            
+            <form id="wa-form" class="space-y-4">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <input type="text" id="wa-name" placeholder="Tu Nombre" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-[#FB6F92] transition">
+                    <select id="wa-interest" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-[#FB6F92] transition">
+                        <option value="General" class="bg-slate-900">Consulta General</option>
+                        <option value="Pedido" class="bg-slate-900">Realizar Pedido</option>
+                        <option value="Soporte" class="bg-slate-900">Soporte Técnico</option>
+                    </select>
+                </div>
+                <textarea id="wa-msg" rows="4" placeholder="¿En qué podemos ayudarte?" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-[#FB6F92] transition"></textarea>
+                <button type="button" onclick="sendWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white py-5 rounded-2xl font-black uppercase tracking-widest transition flex items-center justify-center gap-3">
+                    <i class="fab fa-whatsapp text-xl"></i> Enviar Mensaje
+                </button>
+            </form>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 border-t border-gray-800 text-center text-gray-500 text-sm">
-        <p class="mb-2">&copy; 2024 Más que Tecnología - Gestionado por Estrella Condori.</p>
-        <div class="flex justify-center gap-4 mt-4">
-            <span class="flex items-center gap-1"><i class="fas fa-phone-alt text-neon"></i> 63537033</span>
-        </div>
+    <footer class="py-12 border-t border-white/5 text-center">
+        <p class="text-[10px] font-bold text-gray-500 tracking-[0.4em] uppercase">© 2024 Más Que Tecnología - Todos los derechos reservados</p>
     </footer>
 
-    <!-- WhatsApp Flotante -->
-    <a href="https://wa.me/59163537033" target="_blank" class="whatsapp-btn fixed bottom-6 right-6 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl z-50 shadow-2xl">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <!-- Chat Bot MÁS MENSAJES -->
+    <div class="fixed bottom-6 right-6 z-[100]">
+        <!-- Ventana de Chat -->
+        <div id="chat-window" class="absolute bottom-20 right-0 w-80 sm:w-96 glass rounded-[30px] overflow-hidden shadow-2xl flex flex-col h-[500px]">
+            <div class="bg-[#FB6F92] p-5 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-md">
+                        <i class="fas fa-robot text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-black uppercase tracking-widest leading-none">MÁS MENSAJES</p>
+                        <p class="text-[9px] font-bold opacity-80 uppercase">Asistente Virtual</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="text-white hover:rotate-90 transition"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div id="chat-body" class="flex-1 p-6 overflow-y-auto space-y-4 flex flex-col">
+                <div class="ai-bubble p-4 text-xs leading-relaxed max-w-[85%]">
+                    ¡Hola! Soy <b>Más Mensajes</b>, el asistente de <b>Más Que Tecnología</b>. ✨ ¿En qué gadget estás interesada hoy?
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-white/10 flex gap-2">
+                <input type="text" id="chat-input" placeholder="Escribe aquí..." class="flex-1 bg-white/5 rounded-xl px-4 py-3 text-xs outline-none focus:ring-1 focus:ring-[#FB6F92]">
+                <button onclick="handleChat()" class="bg-[#FB6F92] w-10 h-10 rounded-xl flex items-center justify-center hover:scale-105 transition">
+                    <i class="fas fa-paper-plane text-xs"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Botón Flotante -->
+        <button onclick="toggleChat()" class="bg-[#FB6F92] w-16 h-16 rounded-2xl shadow-xl flex flex-col items-center justify-center hover:scale-110 active:scale-95 transition-all">
+            <i class="fas fa-comments text-2xl"></i>
+            <span class="text-[7px] font-black uppercase mt-1">MÁS MENSAJES</span>
+        </button>
+    </div>
 
     <script>
-        // Manejo del menú móvil
-        const btn = document.getElementById('mobile-menu-button');
-        const menu = document.getElementById('mobile-menu');
+        // Datos de productos
+        const productos = [
+            { id: 1, name: "SoundSphere H1 Rose", price: 850, category: "Audio", image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&q=80&w=600" },
+            { id: 2, name: "Keyboard Neon Pink", price: 420, category: "Accesorios", image: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=600" },
+            { id: 3, name: "Smart Lamp Zen", price: 350, category: "Setup", image: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=600" },
+            { id: 4, name: "Mouse Gaming Rose", price: 280, category: "Accesorios", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=600" }
+        ];
 
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
+        let cart = [];
+        const apiKey = ""; // Se inyecta en tiempo de ejecución
 
-        // Función para enviar a WhatsApp
-        function sendToWhatsApp() {
-            const name = document.getElementById('userName').value;
-            const interest = document.getElementById('userInterest').value;
-            const message = document.getElementById('userMessage').value;
-            const feedback = document.getElementById('formFeedback');
-
-            if (!name || !message) {
-                feedback.innerText = "Por favor, completa tu nombre y mensaje.";
-                feedback.classList.remove('hidden', 'text-green-400');
-                feedback.classList.add('text-red-400');
-                return;
-            }
-
-            // Configuración del número (Bolivia +591)
-            const phoneNumber = "59163537033";
-            
-            // Construcción del mensaje
-            const encodedMessage = encodeURIComponent(
-                `*NUEVA CONSULTA - M+T*\n\n` +
-                `*Nombre:* ${name}\n` +
-                `*Interés:* ${interest}\n` +
-                `*Mensaje:* ${message}`
-            );
-
-            // Generar URL de WhatsApp
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-            // Feedback visual
-            feedback.innerText = "¡Abriendo WhatsApp!";
-            feedback.classList.remove('hidden', 'text-red-400');
-            feedback.classList.add('text-green-400');
-
-            // Abrir en nueva pestaña
-            setTimeout(() => {
-                window.open(whatsappUrl, '_blank');
-                feedback.classList.add('hidden');
-                document.getElementById('whatsappForm').reset();
-            }, 1000);
+        // Renderizar catálogo
+        function renderProducts() {
+            const grid = document.getElementById('grid-productos');
+            grid.innerHTML = productos.map(p => `
+                <div class="product-card glass rounded-[32px] overflow-hidden group">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                            <button onclick="addToCart(${p.id})" class="bg-white text-black w-12 h-12 rounded-xl flex items-center justify-center hover:bg-[#FB6F92] hover:text-white transition">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                            <button onclick="askBotAbout('${p.name}')" class="bg-white text-black w-12 h-12 rounded-xl flex items-center justify-center hover:bg-[#FB6F92] hover:text-white transition">
+                                <i class="fas fa-robot"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <p class="text-[9px] font-black text-[#FB6F92] uppercase tracking-widest mb-1">${p.category}</p>
+                                <h4 class="text-xl font-bold uppercase italic tracking-tighter">${p.name}</h4>
+                            </div>
+                            <p class="text-xl font-black text-white">Bs. ${p.price}</p>
+                        </div>
+                        <button onclick="addToCart(${p.id})" class="w-full py-3 rounded-xl border border-white/10 font-bold text-xs uppercase tracking-widest hover:bg-[#FB6F92] hover:border-[#FB6F92] transition">Añadir a Bolsa</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Suavizar cierre de menú al hacer click en enlace
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.add('hidden');
-            });
-        });
+        // Lógica de Carrito
+        function addToCart(id) {
+            const item = productos.find(p => p.id === id);
+            cart.push(item);
+            document.getElementById('cart-count').innerText = cart.length;
+            
+            // Animación pequeña al botón
+            const btn = document.getElementById('cart-btn');
+            btn.classList.add('scale-125', 'text-pink-500');
+            setTimeout(() => btn.classList.remove('scale-125', 'text-pink-500'), 300);
+        }
+
+        // Lógica de WhatsApp
+        function sendWhatsApp() {
+            const name = document.getElementById('wa-name').value;
+            const interest = document.getElementById('wa-interest').value;
+            const msg = document.getElementById('wa-msg').value;
+
+            if(!name || !msg) return alert("Por favor completa los campos principales");
+
+            const phone = "59163537033"; // Tu número configurado
+            const text = `*CLIENTE MÁS QUE TECNOLOGÍA*%0A*Nombre:* ${name}%0A*Interés:* ${interest}%0A*Mensaje:* ${msg}`;
+            window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+        }
+
+        // ChatBot MÁS MENSAJES
+        function toggleChat() {
+            document.getElementById('chat-window').classList.toggle('active');
+        }
+
+        function askBotAbout(product) {
+            if(!document.getElementById('chat-window').classList.contains('active')) toggleChat();
+            handleChat(`Háblame del producto ${product} que tienen en Más Que Tecnología.`);
+        }
+
+        async function handleChat(forcedMsg = null) {
+            const input = document.getElementById('chat-input');
+            const message = forcedMsg || input.value.trim();
+            if(!message) return;
+
+            if(!forcedMsg) input.value = '';
+            appendMessage(message, 'user-bubble');
+
+            const loadingId = 'ai-' + Date.now();
+            appendMessage('Escribiendo...', 'ai-bubble', loadingId);
+
+            const systemPrompt = "Eres 'Más Mensajes', el asistente oficial de 'Más Que Tecnología'. Tu tono es moderno, premium, amable y un poco cool. Siempre usas el nombre de la tienda. Ayudas a los clientes a elegir tecnología con estilo (especialmente colores Rose Gold y accesorios aesthetic). Tu número de contacto de WhatsApp es 63537033.";
+            
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: message }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+                
+                const data = await response.json();
+                const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "¡Uy! Parece que perdí la conexión un segundo. ¿Me repites eso?";
+                document.getElementById(loadingId).innerHTML = aiText.replace(/\n/g, '<br>');
+            } catch (error) {
+                document.getElementById(loadingId).innerText = "No puedo conectarme ahora mismo, pero puedes escribirme al WhatsApp: 63537033.";
+            }
+        }
+
+        function appendMessage(text, className, id = null) {
+            const body = document.getElementById('chat-body');
+            const div = document.createElement('div');
+            div.className = `${className} p-4 text-xs leading-relaxed max-w-[85%] shadow-lg transition-all animate-in slide-in-from-bottom-2`;
+            if(className === 'user-bubble') div.classList.add('self-end');
+            if(id) div.id = id;
+            div.innerHTML = text;
+            body.appendChild(div);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        // Inicialización
+        window.onload = () => {
+            renderProducts();
+            
+            // Toggle Menú Móvil
+            document.getElementById('menu-toggle').onclick = () => {
+                alert("Menú móvil: Puedes añadir aquí un overlay si lo deseas.");
+            };
+        };
     </script>
 </body>
 </html>
